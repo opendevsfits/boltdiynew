@@ -10,7 +10,6 @@ interface ModelSelectorProps {
   modelList: ModelInfo[];
   providerList: ProviderInfo[];
   apiKeys: Record<string, string>;
-  modelLoading?: string;
 }
 
 export const ModelSelector = ({
@@ -20,7 +19,6 @@ export const ModelSelector = ({
   setProvider,
   modelList,
   providerList,
-  modelLoading,
 }: ModelSelectorProps) => {
   // Load enabled providers from cookies
 
@@ -85,21 +83,14 @@ export const ModelSelector = ({
         value={model}
         onChange={(e) => setModel?.(e.target.value)}
         className="flex-1 p-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus transition-all lg:max-w-[70%]"
-        disabled={modelLoading === 'all' || modelLoading === provider?.name}
       >
-        {modelLoading == 'all' || modelLoading == provider?.name ? (
-          <option key={0} value="">
-            Loading...
-          </option>
-        ) : (
-          [...modelList]
-            .filter((e) => e.provider == provider?.name && e.name)
-            .map((modelOption, index) => (
-              <option key={index} value={modelOption.name}>
-                {modelOption.label}
-              </option>
-            ))
-        )}
+        {[...modelList]
+          .filter((e) => e.provider == provider?.name && e.name)
+          .map((modelOption, index) => (
+            <option key={index} value={modelOption.name}>
+              {modelOption.label}
+            </option>
+          ))}
       </select>
     </div>
   );

@@ -2,11 +2,6 @@ import type { Message } from 'ai';
 import { toast } from 'react-toastify';
 import { ImportFolderButton } from '~/components/chat/ImportFolderButton';
 
-type ChatData = {
-  messages?: Message[]; // Standard Bolt format
-  description?: string; // Optional description
-};
-
 export function ImportButtons(importChat: ((description: string, messages: Message[]) => Promise<void>) | undefined) {
   return (
     <div className="flex flex-col items-center justify-center w-auto">
@@ -25,17 +20,14 @@ export function ImportButtons(importChat: ((description: string, messages: Messa
               reader.onload = async (e) => {
                 try {
                   const content = e.target?.result as string;
-                  const data = JSON.parse(content) as ChatData;
+                  const data = JSON.parse(content);
 
-                  // Standard format
-                  if (Array.isArray(data.messages)) {
-                    await importChat(data.description || 'Imported Chat', data.messages);
-                    toast.success('Chat imported successfully');
-
-                    return;
+                  if (!Array.isArray(data.messages)) {
+                    toast.error('Invalid chat file format');
                   }
 
-                  toast.error('Invalid chat file format');
+                  await importChat(data.description, data.messages);
+                  toast.success('Chat imported successfully');
                 } catch (error: unknown) {
                   if (error instanceof Error) {
                     toast.error('Failed to parse chat file: ' + error.message);
