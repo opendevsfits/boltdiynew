@@ -24,7 +24,7 @@
     "typecheck": "tsc",
     "typegen": "wrangler types",
     "preview": "pnpm run build && pnpm run start",
-    "prepare": "husky install",
+    "prepare": "pnpm husky install",
     "postinstall": "pnpm prepare && pnpm run build"
   },
   "engines": {
