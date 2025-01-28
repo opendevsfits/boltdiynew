@@ -24,7 +24,7 @@
     "typecheck": "tsc",
     "typegen": "wrangler types",
     "preview": "pnpm run build && pnpm run start",
-    "prepare": "pnpm install --dev && husky install && remix vite:build",
+    "prepare": "pnpm install --dev && husky install",
     "postinstall": "pnpm prepare && pnpm run build"
   },
   "engines": {
